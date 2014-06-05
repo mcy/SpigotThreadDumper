@@ -2,3 +2,13 @@ name: SpigotThreadDumper
 main: com.xorinc.spigotthreaddumper.Main
 version: 1.0
 author: drXor
+commands:
+  togglethreadlogging:
+    description: Toggle Thread Logging
+    aliases: []
+    permission: spigotthreaddumper.toggle
+    usage: /<command>
+permissions:
+  spigotthreaddumper.toggle:
+      description: Toggle Thread Logging
+      default: op

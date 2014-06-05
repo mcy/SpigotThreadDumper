@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,6 +18,9 @@ public class Main extends JavaPlugin{
 
 	private Thread dumper = new Thread(new DumpTask(), "Xor Stacktrace Logger");
 	
+	private volatile boolean isLogging = false; // default off
+	
+	@Override
 	public void onEnable() {
 		
 		new BukkitRunnable() {
@@ -30,12 +35,23 @@ public class Main extends JavaPlugin{
 		
 	}
 	
+	@Override
 	public void onDisable() {
 		
 		dumper.interrupt();
 	}
 	
-	public class DumpTask implements Runnable {
+	@Override
+	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args){
+		
+		isLogging = !isLogging;
+		
+		s.sendMessage("Thread dumping state: " + isLogging);
+		
+		return true;
+	}
+	
+	private class DumpTask implements Runnable {
 
 		File logs = new File(Main.this.getDataFolder(), "dumpLogs");
 		
@@ -58,6 +74,9 @@ public class Main extends JavaPlugin{
 						
 					if(Thread.currentThread().isInterrupted())
 						return;
+					
+					if(!isLogging)
+						continue;
 					
 					Date now = new Date();
 					
