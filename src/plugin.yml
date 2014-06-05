@@ -1,0 +1,4 @@
+name: SpigotThreadDumper
+main: com.xorinc.spigotthreaddumper.Main
+version: 1.0
+author: drXor
